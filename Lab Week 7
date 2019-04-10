@@ -1,0 +1,168 @@
+import java.util.*;
+import java.io.*;
+
+/**
+ * 
+ * @author zoairiah.khan@mail.utoronto.ca
+ * 
+ */
+public class Problem1 {
+
+	private ArrayList<String> _alBooks;
+	
+	public Problem1() { // the ____ corresponds to the class name; in class we used BookStore but due to the naming convention required we will use Problem 1
+		
+		_alBooks = new ArrayList<String>(); 
+	
+	}//end of Problem1
+	
+	public void addTitle(String title) { //method to add a title (book basically) to the bookstore
+		
+		_alBooks.add(title);
+	
+	}//end of addTitle
+	
+	public boolean inStock(String title) { //method to check a book is in stock
+		
+		if (_alBooks.contains(title)) { //if book in stock return true
+			
+			System.out.println("We have the book " + title + " in stock");
+			
+			return _alBooks.contains(title);
+		
+		}//end of if statement
+		
+		else { //if the book is not in stock return false
+			
+			System.out.println("We do not have the book " + title + " in stock");
+			
+			return _alBooks.contains(title);
+		
+		}//end of else statement
+		
+	
+	}//end of inStock
+	
+	public void removeBook(String title){ //remove book from the bookstore
+		
+		if (_alBooks.contains(title)) { //if we have the book, remove it
+			
+			_alBooks.remove(title);
+		
+		}//end of if statement
+		
+		else { //if the book is not in stock, we cannot remove it 
+		
+			System.out.println("Cannot remove book as we do not have " + title);
+		
+		}//end of else statement
+	
+	}//end of removeBook 
+	
+	public void displayStock() { //display all the books in the bookstore (including the duplicates)
+		
+		if (_alBooks.isEmpty()) { //if nothing in the bookstore then notify user
+			
+			System.out.println("The BookStore is empty :( ");
+		
+		}//end of if statement
+		
+		else { //print out books if bookstore is not empty 
+			//displaying it not in alphabetical order
+			for (String s : _alBooks) {
+				
+				System.out.println(s);
+			
+			}//end of for loop
+		
+		}//end of else statement
+		
+	}//end of displayStock
+	
+	public void displaySorted() { //display all books in the bookstore (sorted and no duplicates)
+		
+		if (_alBooks.isEmpty()) { //if nothing in the bookstore then notify user
+			
+			System.out.println("There are no books to be sorted");
+		
+		}//end of if statement
+		
+		else { //else, sort the books and take out any duplicates and display
+			
+			//sorting in natural alphabetical order
+			
+			Collections.sort(_alBooks); //Collections is a class with its own set of methods which may be used
+			
+			Set<String> set = new LinkedHashSet<String>(_alBooks); //Set is a type of collection that automatically eliminates any duplicate
+			
+			for(String s : set) {
+			  
+				System.out.println(s);
+			
+			}//end of for loop
+	
+		}//end of else statement
+		
+	}//end of displaySorted
+	
+	
+	/**
+	 * I know that the following code may not be correct, but I tried to do as much as I could
+	 **/
+	
+	public void displayStockInFile(String filename) throws FileNotFoundException, IOException { //display the stock using a file input
+		
+		//the file must have the book names in the following fashion ("5:The Adventures of Huckleberry Finn") where 5 is the number of copies and after the ':' is the book title
+		
+		BufferedReader  fin = new  BufferedReader(new FileReader(filename)); //create a buffered reader to 'take in' the books in the file
+		
+		String line;
+		
+		do {
+		
+			line = fin.readLine(); //read the line and do this until the line is empty
+			
+			if (line != null) //if line is not empty
+			
+				line.split(":"); //split the line at the : 
+				
+				line.trim(); //get rid of extra spaces
+
+				_alBooks.add(line);
+				
+				System.out.println(line);
+		
+		} while(line != null);
+		//end of do while loop
+		
+		fin.close (); //always remember to close the file
+		
+	}//end of displayStockInFile
+	
+	
+	//Main
+	public static void main(String[] args) {
+		Problem1 bs = new Problem1();
+		bs.addTitle("Huckelberry Finn");
+		bs.addTitle("Huckelberry Finn");
+		bs.inStock("Mara Dyer");
+		bs.addTitle("Winnie the Pooh");
+		bs.removeBook("Time Makes Sense");
+		bs.displayStock();
+		bs.displaySorted();
+		
+		
+		try {
+			bs.displayStockInFile("labweek7-zoairiahk\testCase.txt");
+		} catch (FileNotFoundException e) {
+			System.out.println("FileNotFoundException: Could not find file");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("IOException");
+			e.printStackTrace();
+		}
+	
+	}//end of main
+	
+
+}//end of class
